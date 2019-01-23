@@ -1,44 +1,32 @@
 const str2fn = require('str2fn');
 const pprops = require('p-props');
 
-const register = (server, pluginOptions) => {
-  server.decorate('server', 'processData', (obj, request) => {
-    const debug = (request.query && request.query.debug === 1);
+module.exports = (obj, context, debug, log) => {
+  if (debug) {
+    log(['debug', 'process-data'], { message: 'process-data-called in debug mode' });
+  }
+  const allData = {};
+  const regex = new RegExp(/^[a-zA-Z.0-9]+\(.*\)$/);
+
+  const getVal = async (val, ctx) => {
     if (debug) {
-      console.log('DEBUG MODE');
+      log(['debug', 'process-data'], { messaage: `Calling ${val}` });
     }
-    const allData = {};
-    const regex = new RegExp(/^[a-zA-Z.0-9]+\(.*\)$/);
 
-    const getVal = async (val, methods, context) => {
-      if (debug) {
-        server.log(['debug', 'processData'], { message: `Calling ${val}` });
-        console.log(`Calling ${val}`);
-      }
+    const ret = await str2fn(val, ctx);
+    if (debug) {
+      log(['debug', 'process-data'], { message: `Data Returned for:  ${val}`, data: ret });
+    }
 
-      const ret = await str2fn(val, server.methods, context);
-      if (debug) {
-        server.log(['debug', 'processData'], { message: `Data Returned for ${val}`, data: ret });
-        console.log(`Return ${val}`, ret);
-      }
+    return ret;
+  };
 
-      return ret;
-    };
-
-    Object.entries(obj).forEach(([key, value]) => {
-      if (typeof value === 'string' && value.match(regex)) {
-        allData[key] = getVal(value, server.methods, { request, obj });
-        return;
-      }
-      allData[key] = value;
-    });
-    return pprops(allData);
+  Object.entries(obj).forEach(([key, value]) => {
+    if (typeof value === 'string' && value.match(regex)) {
+      allData[key] = getVal(value, context);
+      return;
+    }
+    allData[key] = value;
   });
-};
-
-exports.plugin = {
-  register,
-  name: 'hapi-process-data',
-  once: true,
-  pkg: require('./package.json')
+  return pprops(allData);
 };
