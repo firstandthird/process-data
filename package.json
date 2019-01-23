@@ -1,5 +1,5 @@
 {
-  "name": "process-data",
+  "name": "@firstandthird/process-data",
   "version": "0.0.1",
   "description": "Hapi plugin to process data",
   "main": "index.js",
