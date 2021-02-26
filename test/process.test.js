@@ -8,7 +8,7 @@ const sleep = function timeout(ms) {
 
 tap.test('can instantiate and object', async t => {
   const server = new Hapi.Server({ port: 8080 });
-  await server.register(plugin);
+  await server.register({ plugin, options: {} });
 
   server.method('doSomething', (arg) => `Something to do with ${arg}`);
   server.method('waitOn', async (arg) => {

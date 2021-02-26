@@ -9,8 +9,8 @@
   "author": "First+Third",
   "license": "ISC",
   "dependencies": {
-    "p-props": "^1.2.0",
-    "str2fn": "^5.0.0"
+    "p-props": "^4.0.0",
+    "str2fn": "^5.0.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
