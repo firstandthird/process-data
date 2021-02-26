@@ -3,6 +3,7 @@ const pprops = require('p-props');
 
 const register = (server, options) => {
   const processData = (obj, context, debug, log) => {
+    context = Object.assign(server.methods, context);
     if (debug) {
       log({ message: 'process-data-called in debug mode' });
     }
@@ -13,7 +14,6 @@ const register = (server, options) => {
       if (debug) {
         log({ messaage: `Calling ${val}` });
       }
-
       const ret = await str2fn(val, ctx);
       if (debug) {
         log({ message: `Data Returned for:  ${val}`, data: ret });
