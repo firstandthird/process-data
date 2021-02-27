@@ -2,9 +2,7 @@ const str2fn = require('str2fn');
 const pprops = require('p-props');
 
 module.exports = (obj, context, debug, log) => {
-  if (debug) {
-    // should use console.log by default:
-    log = log || console.log;
+  if (log) {
     log({ message: 'process-data-called in debug mode' });
   }
   const allData = {};

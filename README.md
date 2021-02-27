@@ -56,8 +56,8 @@ An object containing the context in which strings will be evaluated.
 
 __debug__ (default is false)
 
-Set to true to print out debug info
+Set to true to activate debug mode.  You must specify a logging function in debug mode.
 
-__log__
+__log__ (required when debug is true)
 
-If you want to pass your own logging method (eg when you're using processData on a remote server) you can.  Otherwise by default processData will log debug info to console.log
+When debug mode is true, you must pass your own logging method.  
